@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f5f7f2" />
+    <meta name="description" content="A thoughtful, practical view of your monthly money." />
+    <title>PocketSmart | Your money, in view</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar" aria-label="Main navigation">
+        <a class="brand" href="#overview" aria-label="PocketSmart home">
+          <span class="brand-mark"><i data-lucide="wallet-cards"></i></span>
+          <span>Pocket<span class="brand-light">Smart</span></span>
+        </a>
+
+        <div class="nav-label">WORKSPACE</div>
+        <nav class="nav-list">
+          <a class="nav-link active" href="#overview" aria-current="page"><i data-lucide="layout-dashboard"></i><span>Overview</span></a>
+          <a class="nav-link" href="#transactions"><i data-lucide="arrow-left-right"></i><span>Transactions</span></a>
+          <a class="nav-link" href="#budget"><i data-lucide="chart-no-axes-combined"></i><span>Budgets</span></a>
+        </nav>
+
+        <div class="sidebar-bottom">
+          <div class="sidebar-note">
+            <span class="note-spark"><i data-lucide="sparkles"></i></span>
+            <p>A little clarity goes a long way.</p>
+            <span class="note-caption">YOUR MONEY, MORE MINDFULLY</span>
+          </div>
+          <button class="profile-button" type="button" aria-label="Profile for Alex Morgan">
+            <span class="avatar">AM</span>
+            <span class="profile-copy"><strong>Alex Morgan</strong><small>Personal account</small></span>
+            <i data-lucide="chevrons-up-down"></i>
+          </button>
+        </div>
+      </aside>
+
+      <main id="overview" class="main-content">
+        <header class="topbar">
+          <div class="breadcrumb">MY FINANCES <span>/</span> OVERVIEW</div>
+          <div class="topbar-actions">
+            <span class="sync-state"><span class="sync-dot"></span> All changes saved</span>
+            <button class="icon-button" type="button" id="download-button" aria-label="Download transactions as CSV" title="Download CSV"><i data-lucide="download"></i></button>
+          </div>
+        </header>
+
+        <section class="welcome-row" aria-labelledby="welcome-title">
+          <div>
+            <p class="eyebrow" id="current-date">YOUR MONTH AT A GLANCE</p>
+            <h1 id="welcome-title">Make room for <span>what matters.</span></h1>
+            <p class="welcome-subtitle">A clear picture of your money, and a few thoughtful next steps.</p>
+          </div>
+          <button class="primary-button" id="add-transaction-button" type="button"><i data-lucide="plus"></i> Add transaction</button>
+        </section>
+
+        <section class="metrics-grid" aria-label="Monthly summary">
+          <article class="metric-card metric-balance">
+            <div class="metric-heading"><span>AVAILABLE THIS MONTH</span><i data-lucide="wallet"></i></div>
+            <div class="metric-value" id="available-value">$0</div>
+            <div class="metric-foot"><span class="metric-positive"><i data-lucide="trending-up"></i><span id="income-label">$0 income</span></span><span>after spending</span></div>
+            <div class="balance-accent" aria-hidden="true"></div>
+          </article>
+          <article class="metric-card">
+            <div class="metric-heading"><span>SPENT SO FAR</span><i data-lucide="arrow-up-right"></i></div>
+            <div class="metric-value" id="spent-value">$0</div>
+            <div class="metric-foot"><span id="budget-progress-label">0% of monthly budget</span></div>
+            <div class="progress-track"><span class="progress-fill" id="budget-progress"></span></div>
+          </article>
+          <article class="metric-card">
+            <div class="metric-heading"><span>MONTHLY BUDGET</span><i data-lucide="target"></i></div>
+            <div class="metric-value" id="budget-value">$0</div>
+            <div class="metric-foot"><span class="budget-remaining" id="remaining-label">$0 remaining</span><button class="text-button" id="edit-budget-button" type="button">Edit budget</button></div>
+          </article>
+        </section>
+
+        <div class="content-grid">
+          <div class="primary-column">
+            <section class="panel spending-panel" id="budget" aria-labelledby="spending-title">
+              <div class="panel-heading">
+                <div><p class="eyebrow">THE BIG PICTURE</p><h2 id="spending-title">Spending breakdown</h2></div>
+                <span class="period-pill" id="period-label">This month</span>
+              </div>
+              <div class="spending-layout">
+                <div class="chart-area">
+                  <div class="chart-summary"><span class="chart-total" id="chart-total">$0</span><span class="chart-caption">total spent</span></div>
+                  <div class="donut-chart" id="donut-chart" role="img" aria-label="Spending by category"><div class="donut-hole"><span>MONTHLY</span><strong>SPEND</strong></div></div>
+                </div>
+                <div class="category-list" id="category-list" aria-label="Spending by category"></div>
+              </div>
+            </section>
+
+            <section class="panel transactions-panel" id="transactions" aria-labelledby="transactions-title">
+              <div class="panel-heading transaction-heading">
+                <div><p class="eyebrow">RECENT ACTIVITY</p><h2 id="transactions-title">Transactions</h2></div>
+                <div class="transaction-controls">
+                  <label class="search-box"><i data-lucide="search"></i><span class="visually-hidden">Search transactions</span><input id="transaction-search" type="search" placeholder="Search" /></label>
+                  <select id="transaction-filter" class="filter-select" aria-label="Filter transaction type"><option value="all">All activity</option><option value="expense">Expenses</option><option value="income">Income</option></select>
+                  <button class="text-button" id="view-all-transactions" type="button" aria-expanded="false">View all</button>
+                </div>
+              </div>
+              <div class="table-wrap">
+                <table>
+                  <thead><tr><th scope="col">DESCRIPTION</th><th scope="col">CATEGORY</th><th scope="col">DATE</th><th scope="col" class="amount-column">AMOUNT</th></tr></thead>
+                  <tbody id="transaction-rows"></tbody>
+                </table>
+                <div id="empty-transactions" class="empty-state" hidden>No matching transactions. Try another search or add one above.</div>
+              </div>
+              <div class="table-footer"><span id="transaction-count">0 transactions</span><button class="text-button" id="clear-filters-button" type="button">Clear filters</button></div>
+            </section>
+          </div>
+
+          <aside class="insight-column" aria-label="Budget insights">
+            <section class="insight-panel" aria-labelledby="insight-title">
+              <div class="insight-heading"><span class="insight-icon"><i data-lucide="sparkles"></i></span><span class="insight-label">POCKETSMART SUGGESTS</span></div>
+              <h2 id="insight-title">Small steps, <em>real progress.</em></h2>
+              <p class="insight-intro">A few ideas based on how your month is shaping up.</p>
+              <div id="recommendation-list" class="recommendation-list"></div>
+              <div class="insight-disclaimer"><i data-lucide="info"></i><span>Suggestions are based on the transactions you enter. You’re always in control.</span></div>
+            </section>
+
+            <section class="goal-panel" aria-labelledby="goal-title">
+              <div class="goal-heading"><span class="goal-icon"><i data-lucide="piggy-bank"></i></span><span class="eyebrow">A LITTLE AT A TIME</span></div>
+              <h2 id="goal-title">Your savings goal</h2>
+              <p class="goal-name">Weekend away <span id="goal-percent">0%</span></p>
+              <div class="goal-track"><span id="goal-progress"></span></div>
+              <div class="goal-foot"><span id="goal-saved">$0 saved</span><span id="goal-target">$0 goal</span></div>
+              <button id="edit-goal-button" class="goal-edit" type="button"><i data-lucide="pencil"></i> Update goal</button>
+            </section>
+          </aside>
+        </div>
+
+        <footer class="page-footer"><span>POCKETSMART</span><span>Built for better money days.</span><span id="footer-year"></span></footer>
+      </main>
+    </div>
+
+    <dialog id="transaction-dialog" class="dialog">
+      <form id="transaction-form" class="dialog-form">
+        <div class="dialog-heading"><div><p class="eyebrow">YOUR MONEY, IN VIEW</p><h2 id="transaction-dialog-title">Add transaction</h2></div><button class="icon-button dialog-close" type="button" data-close-dialog aria-label="Close"><i data-lucide="x"></i></button></div>
+        <label class="field-label">Description<input name="description" type="text" placeholder="e.g. Weekly groceries" maxlength="48" required /></label>
+        <div class="form-row"><label class="field-label">Amount<div class="amount-input"><span>$</span><input name="amount" type="number" min="0.01" step="0.01" placeholder="0.00" required /></div></label><label class="field-label">Type<select name="type" id="entry-type"><option value="expense">Expense</option><option value="income">Income</option></select></label></div>
+        <div class="form-row"><label class="field-label">Category<select name="category" id="entry-category" required></select></label><label class="field-label">Date<input name="date" type="date" id="entry-date" required /></label></div>
+        <div class="dialog-actions"><button class="secondary-button" type="button" data-close-dialog>Cancel</button><button class="primary-button" type="submit">Save transaction</button></div>
+      </form>
+    </dialog>
+
+    <dialog id="budget-dialog" class="dialog">
+      <form id="budget-form" class="dialog-form">
+        <div class="dialog-heading"><div><p class="eyebrow">A PLAN THAT FITS</p><h2>Monthly budget</h2></div><button class="icon-button dialog-close" type="button" data-close-dialog aria-label="Close"><i data-lucide="x"></i></button></div>
+        <p class="dialog-copy">Set the amount you’d like to spend this month. Your category limits adjust with it.</p>
+        <label class="field-label">Budget amount<div class="amount-input"><span>$</span><input name="budget" type="number" min="1" step="1" required /></div></label>
+        <div class="dialog-actions"><button class="secondary-button" type="button" data-close-dialog>Cancel</button><button class="primary-button" type="submit">Save budget</button></div>
+      </form>
+    </dialog>
+
+    <dialog id="goal-dialog" class="dialog">
+      <form id="goal-form" class="dialog-form">
+        <div class="dialog-heading"><div><p class="eyebrow">MAKE IT HAPPEN</p><h2>Update savings goal</h2></div><button class="icon-button dialog-close" type="button" data-close-dialog aria-label="Close"><i data-lucide="x"></i></button></div>
+        <label class="field-label">Goal name<input name="name" type="text" maxlength="32" required /></label>
+        <div class="form-row"><label class="field-label">Saved so far<div class="amount-input"><span>$</span><input name="saved" type="number" min="0" step="1" required /></div></label><label class="field-label">Target<div class="amount-input"><span>$</span><input name="target" type="number" min="1" step="1" required /></div></label></div>
+        <div class="dialog-actions"><button class="secondary-button" type="button" data-close-dialog>Cancel</button><button class="primary-button" type="submit">Save goal</button></div>
+      </form>
+    </dialog>
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  </body>
+</html>
